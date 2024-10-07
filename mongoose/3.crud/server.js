@@ -175,16 +175,152 @@ const User = mongoose.model('User',userProfileSchema);
 // findUsers();
 //!-----.limit()-----------------
 
-const findUsers = async ()=>{
+// const findUsers = async ()=>{
+//     try{
+//         const users =await User.find().sort({username:1}).limit(2);
+//         console.log(users);
+//     }catch(error){
+//         console.log(error)
+//     }
+// }
+// findUsers();
+
+//!=================================Updated documents====
+//!--------------.updateOne()----------------------  
+// const updateDoc = async () =>{
+//     try{
+//         await User.updateOne(
+//             {
+//                 username:'Tushar'
+//             },
+//             {
+//                 isActive:false
+//             },
+//             {
+//                 new:true
+//             }
+//         )
+//     }catch(error){
+//         console.log(error);
+//     }
+// }
+// updateDoc();
+
+//!--------------.findByIdAndUpdate()---------------------- 
+// const updateDoc = async () =>{
+//     try{
+//         await User.findByIdAndUpdate(
+//             '6703877f9bab8e12789870ab',
+//             {
+//                 age:23,
+//                 username:'Tushar Rao'
+//             },
+//             {
+//                 new:true
+//             }
+//         )
+//     }catch(error){
+//         console.log(error);
+//     }
+// }
+// updateDoc(); 
+//!--------------.findOneAndUpdate()----------------------  
+// const updateDoc = async () =>{
+//     try{
+//         await User.findOneAndUpdate(
+//             {
+//                 _id:'670388669ccd987bfab5a789'
+//             },
+//             {
+//                 age:23,
+//                 username:'Nikhil Rao'
+//             },
+//             {
+//                 new:true
+//             }
+//         )
+//     }catch(error){
+//         console.log(error);
+//     }
+// }
+// updateDoc(); 
+//!--------------Update Operators----------------------  
+// !$set $unset
+// const updateDoc = async () =>{
+//     try{
+//         await User.findOneAndUpdate(
+//             {
+//                 _id:'670388669ccd987bfab5a789'
+//             },
+//             {
+//                 $set:{age:24},
+//                 $unset:{username:1}
+//             },
+//             {
+//                 new:true
+//             }
+//         )
+//     }catch(error){
+//         console.log(error);
+//     }
+// }
+// updateDoc();
+// !$addToSet $push
+// const updateDoc = async () =>{
+//     try{
+//         await User.findOneAndUpdate(
+//             {
+//                 _id:'670388669ccd987bfab5a789'
+//             },
+//             {
+//                 // $addToSet:{hobbies:'Crying'}
+//                 $push:{hobbies:'Noob'}
+//             },
+//             {
+//                 new:true
+//             }
+//         )
+//     }catch(error){
+//         console.log(error);
+//     }
+// }
+// updateDoc();
+
+// !$inc $mul
+// const updateDoc = async () =>{
+//     try{
+//         await User.findOneAndUpdate(
+//             {
+//                 _id:'670388669ccd987bfab5a789'
+//             },
+//             {
+//                 // $inc:{age:1}
+//                 $mul : {age:10},
+//             },
+//             {
+//                 new:true
+//             }
+//         )
+//     }catch(error){
+//         console.log(error);
+//     }
+// }
+// updateDoc();
+
+// !======================Delet Operators================
+const deleteDoc = async()=>{
     try{
-        const users =await User.find().sort({username:1}).limit(2);
-        console.log(users);
+        // !findById and delt
+        // await User.findByIdAndDelete("670388669ccd987bfab5a789")
+        // !findone and delete
+        // await User.findOneAndDelete({username:'Dr'})
+        // !deletmany
+        await User.deleteMany({age:{$gt:21}});
     }catch(error){
-        console.log(error)
+        console.log(error);
     }
 }
-findUsers();
-
+deleteDoc()
 
 app.get('/',(req,res)=>{
     res.send("Hello wolr")
