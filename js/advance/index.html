@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="#">
+        <input type="text" name="name" placeholder="Name">
+    <input type="text" name="phone" placeholder="Phone">
+    <input type="text" name="email" placeholder="Email">
+    <input type="radio" name="language" value="English">English
+    <input type="radio" name="language" value="Hindi">Hindi
+    <input type="radio" name="language" value="Math">Math
+    
+    </form>
+    <button onclick="submitForm()" type="submit">submit</button>
+
+    <div id="grandparent">
+        i am the grandparent
+        <div id="parent">
+            i am the parent
+            <div id="child1" class="child">child 1</div>
+            <div id="child2" class="child">child 2</div>
+        </div>
+    </div>
+
+    <script src="get-element-by-name.js"></script>
+    <script src="accesing-parent-and-child-elements.js"></script>
+</body>
+</html>
