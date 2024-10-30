@@ -4,30 +4,29 @@ const app = express();
 const mongoose = require('mongoose');
 const ejsLayout = require('express-ejs-layouts');
 const userRoutes = require('./routes/authRoutes');
-const session = require('express-session');
-const MongoStore = require('connect-mongo');
+const postRoutes = require('./routes/postRoutes');
+const sessionConfig = require('./config/sessionConfig');
+const authMiddleware = require('./middlewares/authMiddleware');
 const PORT = process.env.PORT || 4000;
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
+app.use(sessionConfig);
+app.use(authMiddleware);
 
-// Session
-app.use(
-    session({
-        secret: process.env.SECRET_KEY,
-        resave: false,
-        saveUninitialized: false,
-        store: MongoStore.create({ mongoUrl: process.env.MONGO_URL })
-    })
-);
-
+// Template
 app.set('view engine', 'ejs');
 app.use(ejsLayout);
 app.set('layout', 'layout/main-layout');
 
 // Routes
 app.use("/auth", userRoutes);
+app.use('/post',postRoutes)
+app.get('/',(req,res)=>{
+    res.render('home',{ title: 'Home', error: null })
+})
 
+// Connection
 const connectTODB = async () => {
     try {
         await mongoose.connect(process.env.MONGO_URL);
