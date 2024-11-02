@@ -7,6 +7,7 @@ const userRoutes = require('./routes/authRoutes');
 const postRoutes = require('./routes/postRoutes');
 const sessionConfig = require('./config/sessionConfig');
 const authMiddleware = require('./middlewares/authMiddleware');
+const commentRoutes = require('./routes/commentRoutes');
 const PORT = process.env.PORT || 4000;
 
 // Middleware
@@ -28,7 +29,8 @@ app.set('layout', 'layout/main-layout');
 
 // Routes
 app.use("/auth", userRoutes);
-app.use('/posts',postRoutes)
+app.use('/posts',postRoutes);
+app.use('/',commentRoutes);
 app.get('/',(req,res)=>{
     res.render('home',{ title: 'Home'})
 })
