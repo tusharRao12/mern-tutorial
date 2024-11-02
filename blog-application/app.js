@@ -14,6 +14,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(sessionConfig);
 app.use(authMiddleware);
 
+app.use((req, res, next) => {
+    res.locals.error = '';   // Initialize error
+    res.locals.success = ''; // Initialize success
+    next();
+});
+
+
 // Template
 app.set('view engine', 'ejs');
 app.use(ejsLayout);
@@ -23,8 +30,9 @@ app.set('layout', 'layout/main-layout');
 app.use("/auth", userRoutes);
 app.use('/post',postRoutes)
 app.get('/',(req,res)=>{
-    res.render('home',{ title: 'Home', error: null })
+    res.render('home',{ title: 'Home'})
 })
+
 
 // Connection
 const connectTODB = async () => {
