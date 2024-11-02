@@ -27,7 +27,6 @@ exports.login = async (req, res) => {
 
         req.session.userId = user._id;
         req.session.username = user.username;
-        console.log('Session Username:', req.session.username);
 
         return res.redirect('/');
     } catch (error) {

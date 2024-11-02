@@ -1,0 +1,13 @@
+<h1><%= post.title %></h1>
+<p><%= post.content %></p>
+
+<% post.images.forEach((image) => { %>
+    <div>
+        <img src="<%= image.url %>" alt="">
+    </div>
+<% }) %>
+
+<% if (userId && userId.toString() === post.author._id.toString()) { %>
+    <a href="/posts/<%= post._id %>/edit">Edit</a>
+    <a href="/posts/<%= post._id %>/delete">Delete</a>
+<% } %>

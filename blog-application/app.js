@@ -28,7 +28,7 @@ app.set('layout', 'layout/main-layout');
 
 // Routes
 app.use("/auth", userRoutes);
-app.use('/post',postRoutes)
+app.use('/posts',postRoutes)
 app.get('/',(req,res)=>{
     res.render('home',{ title: 'Home'})
 })

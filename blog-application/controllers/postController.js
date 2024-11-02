@@ -1,11 +1,18 @@
 const File = require("../models/File")
 const Post = require("../models/Post")
 
-exports.getPosts = (req,res)=>{
-    res.render('post/posts',{
-            title:'Posts'
-        })
-}
+exports.getPosts = async (req, res) => {
+    try {
+        const posts = await Post.find().populate("author", "username"); 
+        
+        res.render('post/posts', {
+            title: 'Posts',
+            posts 
+        });
+    } catch (error) {
+        res.status(500).render("error", { title: "Error", error: "Unable to load posts" });
+    }
+};
 
 exports.addPostsForm = (req,res)=>{
     res.render('post/addPost',{
@@ -20,10 +27,18 @@ exports.addPosts = async (req, res) => {
     if (!req.session.userId) {
         return res.redirect('/auth/login');
     }
+    
+    if (!title || !content) {
+        return res.render('post/addPost', {
+            title: "Add Post",
+            error: "Title and Content fields are required."
+        });
+    }
+
     if (!req.files || req.files.length === 0) {
         return res.render('post/addPost', {
             title: "Add Post",
-            error: "Image field is required"
+            error: "Image field is required."
         });
     }
 
@@ -40,6 +55,7 @@ exports.addPosts = async (req, res) => {
                 public_id: newFile.public_id,
             };
         }));
+
         const newPost = new Post({
             title,
             content,
@@ -48,8 +64,8 @@ exports.addPosts = async (req, res) => {
         });
 
         await newPost.save();
-        res.render('post/posts', {
-            title: 'Add Post',
+        res.render('post/addPost', {
+            title: 'Posts',
             success: "Post created successfully!"
         });
     } catch (error) {
@@ -61,3 +77,21 @@ exports.addPosts = async (req, res) => {
     }
 };
 
+
+exports.getPostsById = async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.id).populate("author", "username");
+        
+        res.render("post/post", {
+            title: 'Post',
+            post,
+            userId: req.session.userId, 
+        });
+    } catch (error) {
+        console.error("Error fetching post:", error);
+        res.status(500).render("error", {
+            title: "Error",
+            error: "An error occurred while retrieving the post."
+        });
+    }
+};
