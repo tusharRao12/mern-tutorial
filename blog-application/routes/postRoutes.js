@@ -1,6 +1,6 @@
 const express = require('express');
 const postRoutes = express.Router();
-const {getPosts,addPostsForm,addPosts,getPostsById,getEditPostForm,updatePost} = require('../controllers/postController');
+const {getPosts,addPostsForm,addPosts,getPostsById,getEditPostForm,updatePost,deletePost} = require('../controllers/postController');
 const upload = require('../config/multer');
 const isAuthenticated = require('../middlewares/isAuthenticated');
 
@@ -15,5 +15,7 @@ postRoutes.get('/:id', getPostsById);
 postRoutes.get('/:id/edit', getEditPostForm);
 
 postRoutes.put('/:id',upload.array("images",5), updatePost);
+
+postRoutes.delete('/:id',deletePost);
 
 module.exports = postRoutes;

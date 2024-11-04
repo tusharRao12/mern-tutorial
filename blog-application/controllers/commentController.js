@@ -63,4 +63,59 @@ exports.addComment = async (req, res) => {
     }
 };
 
+exports.getCommentForm = async (req,res)=>{
+    const comment = await Comment.findById(req.params.id);
+    if(!comment){
+        return res.render('post/post',{
+            title:'Post',
+            comment,
+            error:'Post not found',
+        });
+    }
+    res.render('post/editComment',{
+        title:'Comment',
+        comment,
+    });
+}
 
+exports.updateComment = async(req,res)=>{
+    const {content} = req.body;
+    const comment = await Comment.findById(req.params.id);
+    if(!comment){
+        return res.render('post/post',{
+            title:'Post',
+            comment,
+            error:'Comment not found'
+        })
+    }
+    if(comment.author.toString() !==req.session.userId.toString()){
+        return res.render('post/post',{
+            title:'Post',
+            comment,
+            error:'You are not authorized to edit this comment'
+        });
+    }
+    comment.content = content || comment.content;
+    await comment.save();
+    res.redirect(`/posts/${comment.post}`);
+}
+
+exports.deleteComent = async(req,res)=>{
+    const comment = await Comment.findById(req.params.id);
+    if(!comment){
+        return res.render('post/post',{
+            title:'Post',
+            comment,
+            error:'Comment not found'
+        });
+    }
+    if(comment.author.toString() !==req.session.userId.toString()){
+        return res.render('post/post',{
+            title:'Post',
+            comment,
+            error:'Ypu are not authorized to delete this comment',
+        });
+    }
+    await Comment.findByIdAndDelete(req.params.id);
+    res.redirect(`/posts/${comment.post}`);
+}
