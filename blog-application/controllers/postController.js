@@ -1,6 +1,7 @@
 const File = require("../models/File");
 const Post = require("../models/Post");
 const cloudinary = require('../config/cloudinary');
+const Comment = require("../models/Comment");
 
 exports.getPosts = async (req, res) => {
     try {
@@ -170,27 +171,31 @@ exports.updatePost = async (req, res) => {
 };
 
 
-exports.deletePost = async (req,res)=>{
+exports.deletePost = async (req, res) => {
     const post = await Post.findById(req.params.id);
-    if(!post){
-        return res.render('post/post',{
-            title:'Post',
+    
+    if (!post) {
+        return res.render('post/post', {
+            title: 'Post',
             post,
-            error:'Post not found'
+            error: 'Post not found'
         });
     }
-    if(post.author.toString() !==req.session.userId.toString()){
-        return res.render('post/post',{
-            title:'Post',
+
+    if (post.author.toString() !== req.session.userId.toString()) {
+        return res.render('post/post', {
+            title: 'Post',
             post,
-            error:'You are not authorized to delete this post',
+            error: 'You are not authorized to delete this post'
         });
     }
     await Promise.all(
-        post.images.map(async(image)=>{
+        post.images.map(async (image) => {
             await cloudinary.uploader.destroy(image.public_id);
         })
     );
+    await Comment.deleteMany({ post: req.params.id });
     await Post.findByIdAndDelete(req.params.id);
+
     res.redirect('/posts');
-}
+};
