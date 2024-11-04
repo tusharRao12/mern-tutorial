@@ -80,7 +80,16 @@ exports.addPosts = async (req, res) => {
 
 exports.getPostsById = async (req, res) => {
     try {
-        const post = await Post.findById(req.params.id).populate("author", "username");
+        const post = await Post.findById(req.params.id)
+        .populate("author", "username")
+        .populate({
+            path:"comments",
+            populate:{
+                path:"author",
+                model:"User",
+                select:"username"
+            }
+        });
         
         res.render("post/post", {
             title: 'Post',

@@ -1,31 +1,66 @@
 const Comment = require("../models/Comment");
 const Post = require("../models/Post");
 
-exports.addComment = async (req,res)=>{
-    const {content} = req.body;
+exports.addComment = async (req, res) => {
+    const { content } = req.body;
     const postId = req.params.id;
-    const post = await Post.findById(postId);
-    if(!post){
-        return res.render('post/post',{
-            title:"Post",
+
+    if (!req.session.userId) {
+        const post = await Post.findById(postId).populate('author').populate({
+            path: 'comments',
+            populate: { path: 'author', select: 'username' }
+        });
+        return res.render('post/post', {
+            title: "Post",
             post,
-            error:'Post not Found'
+            userId: req.session.userId,
+            error: "You have to log in first to comment."
         });
     }
-    if(!content){
-        return res.render('post/post',{
-            title:"Post",
+
+    const post = await Post.findById(postId).populate('author').populate({
+        path: 'comments',
+        populate: { path: 'author', select: 'username' }
+    });
+    if (!post) {
+        return res.render('post/post', {
+            title: "Post",
             post,
-            error:"Comment can't be empty"
+            userId: req.session.userId,
+            error: "Post not found"
         });
     }
-    const comment = new Comment({
-        content,
-        post:postId,
-        author:req.user.id,
-    })
-    await comment.save();
-    post.comment.push(comment._id);
-    await post.save();
-    res.redirect(`/post/${postId}`);
+
+    if (!content) {
+        return res.render('post/post', {
+            title: "Post",
+            post,
+            userId: req.session.userId,
+            error: "Comment can't be empty"
+        });
+    }
+
+    try {
+        const comment = new Comment({
+            content,
+            post: postId,
+            author: req.session.userId,
+        });
+        await comment.save();
+
+        post.comments.push(comment._id);
+        await post.save();
+
+        res.redirect(`/posts/${postId}`);
+    } catch (error) {
+        console.error(error);
+        res.render('post/post', {
+            title: "Post",
+            post,
+            userId: req.session.userId,
+            error: "An error occurred while adding your comment."
+        });
+    }
 };
+
+
