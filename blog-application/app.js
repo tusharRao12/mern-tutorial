@@ -8,16 +8,17 @@ const postRoutes = require('./routes/postRoutes');
 const sessionConfig = require('./config/sessionConfig');
 const authMiddleware = require('./middlewares/authMiddleware');
 const commentRoutes = require('./routes/commentRoutes');
+const methodOverride = require('method-override');
 const PORT = process.env.PORT || 4000;
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(sessionConfig);
 app.use(authMiddleware);
-
+app.use(methodOverride('_method'))
 app.use((req, res, next) => {
-    res.locals.error = '';   // Initialize error
-    res.locals.success = ''; // Initialize success
+    res.locals.error = '';   
+    res.locals.success = ''; 
     next();
 });
 

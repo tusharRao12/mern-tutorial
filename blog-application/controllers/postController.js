@@ -1,5 +1,6 @@
-const File = require("../models/File")
-const Post = require("../models/Post")
+const File = require("../models/File");
+const Post = require("../models/Post");
+const cloudinary = require('../config/cloudinary');
 
 exports.getPosts = async (req, res) => {
     try {
@@ -104,3 +105,60 @@ exports.getPostsById = async (req, res) => {
         });
     }
 };
+
+exports.getEditPostForm = async (req,res)=>{
+    const post = await Post.findById(req.params.id);
+    if(!post){
+        return res.render('post/post',{
+            title:'Post',
+            post,
+            error:"Post not found"
+        });
+    }
+    res.render('post/editPost',{
+        title:'Edit Post',
+        post,
+    })
+}
+
+exports.updatePost = async (req,res)=>{
+    const {title,content} = req.body;
+    const post = await Post.findById(req.params.id);
+    if(!post){
+        return res.render('post/post',{
+            title:'Post',
+            post,
+            error:'Post not Found',
+        });
+    }
+    if(post.author.toString() !== req.session.userId.toString()){
+        return res.render('post/postDetails',{
+            title:'Post',
+            post,
+            error:'Yout are authorized to edit this post',
+        });
+    }
+    post.title = title || post.title;
+    post.content = content || post.content;
+    if(req.files){
+        await Promise.all(post.images.map(async (image)=>{
+            await cloudinary.uploader.destroy(image.public_id);
+        }));
+    }
+    post.images = await Promise.all(
+        req.files.map(async (file)=>{
+            const newFile = new File({
+                url:file.path,
+                public_id: file.filename,
+                uploaded_by:req.session.userId,
+            });
+            await newFile.save();
+            return {
+                url:newFile.url,
+                public_id:newFile.public_id,
+            };
+        })
+    );
+    await post.save();
+    res.redirect(`/posts/${post._id}`);
+} 
