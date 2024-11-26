@@ -89,25 +89,6 @@
     ></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
-      <script src="/js/custom.js"></script>
-    <script>
-      $(document).ready(function() {
-        $('#content').summernote({
-          height: 300, 
-          placeholder: 'Write your post content here...', 
-          tabsize: 2,
-        });
-      });
-      function validationForm() {
-        const title = document.getElementById("title").value;
-        const content = $('#content').val(); 
-        if (!title || !content) {
-          alert("Please fill in all fields");
-          return false;
-        }
-        return true;
-      }
-    </script>
-    
+    <script src="/js/custom.js"></script>
   </body>
 </html>
