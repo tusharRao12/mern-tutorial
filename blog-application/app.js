@@ -11,6 +11,7 @@ const commentRoutes = require('./routes/commentRoutes');
 const methodOverride = require('method-override');
 const profileRoute = require('./routes/profileRoute');
 const likeDislikeRoutes = require('./routes/likeDislikeRoutes');
+const path = require('path')
 const PORT = process.env.PORT || 4000;
 
 // Middleware
@@ -26,6 +27,7 @@ app.use((req, res, next) => {
 
 
 // Template
+app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 app.use(ejsLayout);
 app.set('layout', 'layout/main-layout');

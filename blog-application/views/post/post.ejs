@@ -8,16 +8,20 @@
               by <%= post.author.username %> on <%= post.createdAt.toDateString()
               %>
             </p>
-            <p class="card-text"><%= post.content %></p>
+            <p class="card-text"><%- post.content %></p>
   
             <h2 class="mt-4">Images</h2>
             <div class="row">
               <% post.images.forEach(image => { %>
-              <div class="col-md-6 mb-3">
-                <img src="<%= image.url %>" alt="Post Image" class="img-fluid" />
-              </div>
+                <div class="col-md-4 col-sm-6 mb-4"> <!-- Adjust column for better responsiveness -->
+                  <div class="image-container">
+                    <img src="<%= image.url %>" alt="Post Image" class="img-fluid rounded shadow-lg" />
+                  </div>
+                </div>
               <% }) %>
             </div>
+
+
   
             <% if (userId && userId.toString() === post.author._id.toString()) {
             %>
