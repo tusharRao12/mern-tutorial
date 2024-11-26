@@ -18,4 +18,5 @@ postRoutes.put('/:id',upload.array("images",5), updatePost);
 
 postRoutes.delete('/:id',deletePost);
 
+
 module.exports = postRoutes;

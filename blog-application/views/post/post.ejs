@@ -37,7 +37,36 @@
             <% } %>
           </div>
         </div>
-  
+        <!--like dislike-->
+
+        <div class="like-dislike-buttons mt-4">
+    <% if (userId) { %>
+        <!-- Like button -->
+        <form action="/posts/<%= post._id %>/like" method="POST" class="d-inline">
+            <input type="hidden" name="type" value="like">
+            <button type="submit" class="btn btn-success">
+                <i class="fas fa-thumbs-up"></i> Like
+            </button>
+        </form>
+        <!-- Display the like count -->
+        <span><%= likeCount %> Likes</span>
+
+        <!-- Dislike button -->
+        <form action="/posts/<%= post._id %>/dislike" method="POST" class="d-inline">
+            <input type="hidden" name="type" value="dislike">
+            <button type="submit" class="btn btn-danger">
+                <i class="fas fa-thumbs-down"></i> Dislike
+            </button>
+        </form>
+        <!-- Display the dislike count -->
+        <span><%= dislikeCount %> Dislikes</span>
+    <% } else { %>
+        <p><a href="/auth/login">Login</a> to like or dislike this post.</p>
+    <% } %>
+</div>
+
+
+
         <div class="card mb-4">
           <div class="card-body">
             <h2 class="card-title">Comments</h2>

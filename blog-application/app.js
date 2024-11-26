@@ -10,6 +10,7 @@ const authMiddleware = require('./middlewares/authMiddleware');
 const commentRoutes = require('./routes/commentRoutes');
 const methodOverride = require('method-override');
 const profileRoute = require('./routes/profileRoute');
+const likeDislikeRoutes = require('./routes/likeDislikeRoutes');
 const PORT = process.env.PORT || 4000;
 
 // Middleware
@@ -34,6 +35,7 @@ app.use("/auth", userRoutes);
 app.use('/posts',postRoutes);
 app.use('/user', profileRoute)
 app.use('/',commentRoutes);
+app.use('/posts',likeDislikeRoutes);
 app.get('/',(req,res)=>{
     res.render('home',{ title: 'Home'})
 })

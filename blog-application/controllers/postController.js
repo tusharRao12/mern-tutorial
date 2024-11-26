@@ -2,6 +2,7 @@ const File = require("../models/File");
 const Post = require("../models/Post");
 const cloudinary = require('../config/cloudinary');
 const Comment = require("../models/Comment");
+const LikeDislike = require("../models/LikeDislike");
 
 exports.getPosts = async (req, res) => {
     try {
@@ -82,30 +83,43 @@ exports.addPosts = async (req, res) => {
 
 exports.getPostsById = async (req, res) => {
     try {
-        const post = await Post.findById(req.params.id)
-        .populate("author", "username")
-        .populate({
-            path:"comments",
-            populate:{
-                path:"author",
-                model:"User",
-                select:"username"
-            }
-        });
-        
+        const postId = req.params.id;
+
+        // Find the post and populate the necessary data
+        const post = await Post.findById(postId)
+            .populate("author", "username")
+            .populate({
+                path: "comments",
+                populate: {
+                    path: "author",
+                    model: "User",
+                    select: "username",
+                },
+            });
+
+        // Count the number of likes and dislikes for the post
+        const likeCount = await LikeDislike.countDocuments({ post: postId, type: 'like' });
+        const dislikeCount = await LikeDislike.countDocuments({ post: postId, type: 'dislike' });
+
+        // Pass the like and dislike counts to the view
         res.render("post/post", {
             title: 'Post',
             post,
-            userId: req.session.userId, 
+            userId: req.session.userId,
+            likeCount,
+            dislikeCount,
         });
     } catch (error) {
         console.error("Error fetching post:", error);
         res.status(500).render("error", {
             title: "Error",
-            error: "An error occurred while retrieving the post."
+            error: "An error occurred while retrieving the post.",
         });
     }
 };
+
+
+
 
 exports.getEditPostForm = async (req,res)=>{
     const post = await Post.findById(req.params.id);
