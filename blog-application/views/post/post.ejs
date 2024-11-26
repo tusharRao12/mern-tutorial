@@ -42,39 +42,36 @@
           <div class="card-body">
             <h2 class="card-title">Comments</h2>
             <% if (post.comments.length > 0) { %>
-            <ul class="list-group list-group-flush">
-              <% post.comments.forEach(comment => { %>
-              <li
-                class="list-group-item d-flex justify-content-between align-items-center"
-              >
-                <div>
-                  <strong><%= comment.author.username %></strong>: <%=
-                  comment.content %>
-                </div>
-                <% if (userId && userId.toString() ===
-                comment.author._id.toString()) { %>
-                <!-- Only show to the author -->
-                <div class="btn-group">
-                  <a
-                    href="/comments/<%= comment._id %>/edit"
-                    class="btn btn-sm btn-secondary"
-                  >
-                    <i class="fas fa-edit"></i> Edit
-                  </a>
-                  <form
-                    action="/comments/<%= comment._id %>?_method=DELETE"
-                    method="POST"
-                    class="d-inline"
-                  >
-                    <button type="submit" class="btn btn-sm btn-danger">
-                      <i class="fas fa-trash-alt"></i> Delete
-                    </button>
-                  </form>
-                </div>
-                <% } %>
-              </li>
-              <% }) %>
-            </ul>
+              <ul class="list-group list-group-flush">
+                <% post.comments.forEach(comment => { %>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <div>
+                    <% if (comment.author) { %>
+                      <strong><%= comment.author.username %></strong>: <%= comment.content %>
+                    <% } %>
+                    <% //} else { %>
+                      <!--<em>Deleted user</em>:--> <%= //comment.content %>
+                    <% //} %>
+                  </div>
+                  <% if (comment.author && userId && userId.toString() === comment.author._id.toString()) { %>
+                  <div class="btn-group">
+                    <a href="/comments/<%= comment._id %>/edit" class="btn btn-sm btn-secondary">
+                      <i class="fas fa-edit"></i> Edit
+                    </a>
+                    <form
+                      action="/comments/<%= comment._id %>?_method=DELETE"
+                      method="POST"
+                      class="d-inline"
+                    >
+                      <button type="submit" class="btn btn-sm btn-danger">
+                        <i class="fas fa-trash-alt"></i> Delete
+                      </button>
+                    </form>
+                  </div>
+                  <% } %>
+                </li>
+                <% }) %>
+              </ul>
             <% } else { %>
             <p>No comments yet.</p>
             <% } %> <% if (userId) { %>
