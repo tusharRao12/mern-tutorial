@@ -1,48 +1,66 @@
-<h1>Register</h1>
-<form action="/register" method="post" enctype="multipart/form-data" id="registerForm">
-    <div>
-        <label for="name">Name</label>
-        <input type="text" name="name" id="name" placeholder="Name" required>
-        <span id="nameError" class="error"></span>
+<section class="signup">
+    <div class="container">
+        <div class="signup-content">
+            <div class="signup-form">
+                <h2 class="form-title">Register</h2>
+                <form action="/register" method="post" enctype="multipart/form-data" id="registerForm" class="register-form">
+                    <div class="form-group">
+                        <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                        <input type="text" name="name" id="name" placeholder="Your Name" required>
+                        <span id="nameError" class="error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email"><i class="zmdi zmdi-email"></i></label>
+                        <input type="email" name="email" id="email" placeholder="Your Email" required>
+                        <span id="emailError" class="error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone"><i class="zmdi zmdi-phone"></i></label>
+                        <input type="number" name="phone" id="phone" placeholder="Your Phone">
+                        <span id="phoneError" class="error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dateOfBirth"><i class="zmdi zmdi-calendar"></i></label>
+                        <input type="date" name="dateOfBirth" id="dateOfBirth" placeholder="Your Date of Birth">
+                        <span id="dateOfBirthError" class="error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="image"><i class="zmdi zmdi-camera"></i></label>
+                        <input type="file" name="image" id="image" required>
+                        <span id="imageError" class="error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password"><i class="zmdi zmdi-lock"></i></label>
+                        <input type="password" name="password" id="password" placeholder="Password" required>
+                        <span id="passwordError" class="error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm-password"><i class="zmdi zmdi-lock-outline"></i></label>
+                        <input type="password" name="confirm-password" id="confirm-password" placeholder="Confirm Password" required>
+                        <span id="confirmPasswordError" class="error"></span>
+                    </div>
+
+                    <!-- <div class="form-group">
+                        <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" />
+                        <label for="agree-term" class="label-agree-term"><span><span></span></span>I agree all statements in  
+                        <a href="#" class="term-service">Terms of service</a></label>
+                    </div> -->
+
+                    <div class="form-group form-button">
+                        <input type="submit" value="Register" class="form-submit">
+                    </div>
+                </form>
+            </div>
+            <div class="signup-image">
+                <figure><img src="/images/signup-image.jpg" alt="sign up image"></figure>
+                <a href="/login" class="signup-image-link">I am already a member</a>
+            </div>
+        </div>
     </div>
-
-    <div>
-        <label for="email">Email</label>
-        <input type="email" name="email" id="email" placeholder="Email" required>
-        <span id="emailError" class="error"></span>
-    </div>
-
-    <div>
-        <label for="phone">Phone</label>
-        <input type="number" name="phone" id="phone" placeholder="Phone">
-        <span id="phoneError" class="error"></span>
-    </div>
-
-    <div>
-        <label for="dateOfBirth">Date of Birth</label>
-        <input type="date" name="dateOfBirth" id="dateOfBirth" placeholder="Date of Birth">
-        <span id="dateOfBirthError" class="error"></span>
-    </div>
-
-    <div>
-        <label for="image">Profile Image</label>
-        <input type="file" name="image" id="image" required>
-        <span id="imageError" class="error"></span>
-    </div>
-
-    <div>
-        <label for="password">Password</label>
-        <input type="password" name="password" id="password" placeholder="Password" required>
-        <span id="passwordError" class="error"></span>
-    </div>
-
-    <div>
-        <label for="confirm-password">Confirm Password</label>
-        <input type="password" name="confirm-password" id="confirm-password" placeholder="Confirm Password" required>
-        <span id="confirmPasswordError" class="error"></span>
-    </div>
-
-    <input type="submit" value="Register">
-</form>
-
-
+</section>

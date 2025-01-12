@@ -9,7 +9,8 @@ const PORT = process.env.PORT || 4000;
 // Middleware for parsing request bodies and serving static files
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use('/public', express.static(path.join(__dirname, 'public')));
+// app.use('/public', express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Set EJS as the view engine
 app.set('view engine', 'ejs');
