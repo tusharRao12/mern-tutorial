@@ -1,0 +1,48 @@
+<h1>Register</h1>
+<form action="/register" method="post" enctype="multipart/form-data" id="registerForm">
+    <div>
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name" placeholder="Name" required>
+        <span id="nameError" class="error"></span>
+    </div>
+
+    <div>
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email" placeholder="Email" required>
+        <span id="emailError" class="error"></span>
+    </div>
+
+    <div>
+        <label for="phone">Phone</label>
+        <input type="number" name="phone" id="phone" placeholder="Phone">
+        <span id="phoneError" class="error"></span>
+    </div>
+
+    <div>
+        <label for="dateOfBirth">Date of Birth</label>
+        <input type="date" name="dateOfBirth" id="dateOfBirth" placeholder="Date of Birth">
+        <span id="dateOfBirthError" class="error"></span>
+    </div>
+
+    <div>
+        <label for="image">Profile Image</label>
+        <input type="file" name="image" id="image" required>
+        <span id="imageError" class="error"></span>
+    </div>
+
+    <div>
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" placeholder="Password" required>
+        <span id="passwordError" class="error"></span>
+    </div>
+
+    <div>
+        <label for="confirm-password">Confirm Password</label>
+        <input type="password" name="confirm-password" id="confirm-password" placeholder="Confirm Password" required>
+        <span id="confirmPasswordError" class="error"></span>
+    </div>
+
+    <input type="submit" value="Register">
+</form>
+
+
