@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const path = require('path');
 const ejsLayouts = require('express-ejs-layouts');
 const app = express();
+const session = require('express-session');
+const { SESSION_SECRET } = process.env;
 const PORT = process.env.PORT || 4000;
 
 // Middleware for parsing request bodies and serving static files
@@ -11,6 +13,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Session
+app.use(
+    session({
+        secret: SESSION_SECRET || 'KeyboardCat',
+        resave: false,
+        saveUninitialized: true,
+        cookie: { maxAge: 60000 * 60 * 24 }, 
+    })
+);
 
 // Set EJS as the view engine
 app.set('view engine', 'ejs');
