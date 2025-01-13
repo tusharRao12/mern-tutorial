@@ -1,3 +1,4 @@
+// Confirm Password
 document.addEventListener('DOMContentLoaded', function () {
     const registerForm = document.getElementById('registerForm');
     if (registerForm) {
@@ -12,3 +13,23 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
+
+// Chat container display
+document.addEventListener("DOMContentLoaded", function() {
+    if (window.location.pathname === '/dashboard') {
+      const startChatHeading = document.querySelector('.start-head');
+      const chatSection = document.querySelector('.chat-section');
+      const userListItems = document.querySelectorAll('.user-list');
+      const chatContainer = document.querySelector('#chat-container');
+  
+      userListItems.forEach(function(userItem) {
+        userItem.addEventListener('click', function() {
+          startChatHeading.style.display = 'none';
+          chatSection.style.display = 'block';
+          const userName = userItem.querySelector('strong').nextSibling.textContent.trim();
+          chatContainer.innerHTML = `<p>Chatting with: ${userName}</p>`;
+        });
+      });
+    }
+  });
+  

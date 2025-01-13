@@ -90,11 +90,20 @@ loadDashboard = async (req, res) => {
         if (!req.session.user) {
             return res.redirect('/login');
         }
-        res.render('dashboard', { title: 'Dashboard', user: req.session.user });
+        const users = await User.find({
+            _id: { $nin: [req.session.user._id] }
+        }).select('name email phone dateOfBirth image'); 
+
+        res.render('dashboard', {
+            title: 'Dashboard',
+            user: req.session.user,
+            users: users 
+        });
     } catch (error) {
         console.log(error.message);
     }
 };
+
 
 module.exports = {
     registerLoad,
