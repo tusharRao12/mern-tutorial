@@ -7,7 +7,16 @@ const app = express();
 const session = require('express-session');
 const { SESSION_SECRET } = process.env;
 const PORT = process.env.PORT || 4000;
+const http = require('http').Server(app)
+const io = require('socket.io')(http);
 
+var usp = io.of('/user-namespace');
+usp.on('connection',function(socket){
+    console.log('User Connected');
+    socket.on('disconnect',function(){
+       console.log('user Disconnect'); 
+    })
+})
 // Middleware for parsing request bodies and serving static files
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
