@@ -48,13 +48,13 @@ register = async (req, res) => {
             email: req.body.email,
             phone: req.body.phone,
             dateOfBirth: req.body.dateOfBirth,
-            image: req.file ? 'images/' + req.file.filename : null,
+            image: req.file ? 'images/uploads/' + req.file.filename : null,
             password: passwordHash,
         });
 
         await user.save();
-
-        return res.render('register', { title: 'Register', message: 'Registration Complete' });
+        req.session.user = user;
+        return res.redirect('/dashboard');
     } catch (error) {
         console.log(error.message);
     }
