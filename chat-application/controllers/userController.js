@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 
 loginLoad = async (req, res) => {
     try {
-        res.render('login', { title: 'Login' });
+        res.render('login', { hideHeaderFooter: true, title: 'Login' });
     } catch (error) {
         console.log(error.message);
     }
@@ -33,16 +33,26 @@ login = async (req, res) => {
 
 registerLoad = async (req, res) => {
     try {
-        res.render('register', { title: 'Register' });
+        res.render('register', { hideHeaderFooter: true, title: 'Register'});
     } catch (error) {
         console.log(error.message);
     }
 };
 
-register = async (req, res) => {
+const register = async (req, res) => {
     try {
-        const passwordHash = await bcrypt.hash(req.body.password, 10);
+        const existingUser = await User.findOne({
+            $or: [
+                { email: req.body.email },
+                { phone: req.body.phone }
+            ]
+        });
 
+        if (existingUser) {
+            const errorMessage = 'A user with this email or phone number already exists.';
+            return res.render('register', { error: errorMessage ,title:'Register'}); 
+        }
+        const passwordHash = await bcrypt.hash(req.body.password, 10);
         const user = new User({
             name: req.body.name,
             email: req.body.email,
@@ -51,14 +61,15 @@ register = async (req, res) => {
             image: req.file ? 'images/uploads/' + req.file.filename : null,
             password: passwordHash,
         });
-
         await user.save();
         req.session.user = user;
         return res.redirect('/dashboard');
     } catch (error) {
-        console.log(error.message);
+        console.error(error.message);
+        return res.status(500).send('An error occurred during registration.');
     }
 };
+
 
 logout = async (req, res) => {
     try {
