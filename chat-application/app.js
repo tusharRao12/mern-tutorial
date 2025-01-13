@@ -37,10 +37,7 @@ app.use('/', userRoutes);
 // MongoDB Connection
 const connectToDB = async () => {
     try {
-        await mongoose.connect(process.env.MONGO_URL, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
+        await mongoose.connect(process.env.MONGO_URL);
         console.log('MongoDB connected');
 
         app.listen(PORT, () => {
