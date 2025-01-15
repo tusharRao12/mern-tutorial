@@ -14,10 +14,16 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-// Chat container display
+
+// Chat container display and socket
 document.addEventListener("DOMContentLoaded", function() {
     if (window.location.pathname === '/dashboard') {
-      var socket =  io('/user-namespace');
+      const sender_id = document.getElementById('loggedInUserId').value;
+      var socket =  io('/user-namespace',{
+        auth:{
+          token:sender_id
+        }
+      });
       const startChatHeading = document.querySelector('.start-head');
       const chatSection = document.querySelector('.chat-section');
       const userListItems = document.querySelectorAll('.user-list');

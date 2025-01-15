@@ -9,21 +9,20 @@ const { SESSION_SECRET } = process.env;
 const PORT = process.env.PORT || 4000;
 const http = require('http').Server(app)
 const io = require('socket.io')(http);
+const User = require('./models/userModel')
 
 var usp = io.of('/user-namespace');
-usp.on('connection',function(socket){
-    console.log('User Connected');
-    socket.on('disconnect',function(){
-       console.log('user Disconnect'); 
+usp.on('connection',async function(socket){
+        var userId = socket.handshake.auth.token;
+        await User.findByIdAndUpdate({_id:userId},{$set:{is_online:'1'}})
+    socket.on('disconnect',async function(){ 
+        var userId = socket.handshake.auth.token;
+        await User.findByIdAndUpdate({_id:userId},{$set:{is_online:'0'}})
     })
 })
-// Middleware for parsing request bodies and serving static files
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
-
-// Session
 app.use(
     session({
         secret: SESSION_SECRET || 'KeyboardCat',
@@ -32,8 +31,6 @@ app.use(
         cookie: { maxAge: 60000 * 60 * 24 }, 
     })
 );
-
-// Set EJS as the view engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(ejsLayouts)
@@ -43,13 +40,12 @@ app.set('layout','layouts/mainLayout')
 const userRoutes = require('./routes/userRoutes');
 app.use('/', userRoutes);
 
-// MongoDB Connection
 const connectToDB = async () => {
     try {
         await mongoose.connect(process.env.MONGO_URL);
         console.log('MongoDB connected');
 
-        app.listen(PORT, () => {
+        http.listen(PORT, () => {
             console.log(`Server is running on http://localhost:${PORT}`);
         });
     } catch (error) {
