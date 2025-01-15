@@ -9,7 +9,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.2/socket.io.js" integrity="sha512-VJ6+sp2E5rFQk05caiXXzQd1wBABpjEj1r5kMiLmGAAgwPItw1YpqsCCBtq8Yr1x6C49/mTpRdXtq8O2RcZhlQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
-    <%- include('../partials/header') %>
+    <% if (typeof headerFooter === 'undefined' || headerFooter) { %>
+        <%- include('../partials/header') %>
+    <% } %>
     <div class="main">
         <!-- Success Message -->
         <% if (typeof message !== 'undefined') { %>
@@ -24,7 +26,9 @@
         <!-- Main Content -->
         <%- body %> 
     </div>
-    <%- include('../partials/footer') %> 
+    <% if (typeof headerFooter === 'undefined' || headerFooter) { %>
+        <%- include('../partials/footer') %>
+    <% } %>
     <script src="/js/custom.js" defer></script>
 </body>
 </html>

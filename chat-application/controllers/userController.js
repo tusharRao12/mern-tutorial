@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 
 loginLoad = async (req, res) => {
     try {
-        res.render('login', { title: 'Login' });
+        res.render('login', { title: 'Login',headerFooter: false });
     } catch (error) {
         console.log(error.message);
     }
@@ -33,7 +33,7 @@ login = async (req, res) => {
 
 registerLoad = async (req, res) => {
     try {
-        res.render('register', { title: 'Register' });
+        res.render('register', { title: 'Register', headerFooter: false });
     } catch (error) {
         console.log(error.message);
     }
