@@ -1,13 +1,15 @@
-// Wrapper
-const wrapper = document.querySelector(".wrapper"),
-          signupHeader = document.querySelector(".signup header"),
-          loginHeader = document.querySelector(".login header");
-        loginHeader.addEventListener("click", () => {
-          wrapper.classList.add("active");
-        });
-        signupHeader.addEventListener("click", () => {
-          wrapper.classList.remove("active");
-        });
+// Nav toggle
+document.addEventListener("DOMContentLoaded", function() {
+  const menuToggle = document.querySelector("#menu-toggle");
+  const navLinks = document.querySelector(".nav-links");
+
+  if (menuToggle && navLinks) {
+    menuToggle.addEventListener("click", function() {
+      navLinks.classList.toggle("active");
+    });
+  }
+});
+
 
 // Confirm Password
 document.addEventListener('DOMContentLoaded', function () {
