@@ -6,10 +6,17 @@
     <% users.forEach(function(user) { %>
       <li class="user-list">
         <strong>Name:</strong> <%= user.name %><br>
-          <img src="<%= user.image %>" alt="User Image" width="50" height="50">
+        <img src="<%= user.image %>" alt="User Image" width="50" height="50">
+        <% 
+        if (user.is_online == 1) { %>
+            <sup class="online-status" id="<%= user._id %>-status">Online</sup>
+        <% } else { %> 
+            <sup class="offline-status" id="<%= user._id %>-status">Offline</sup>
+        <% } %>  
       </li>
     <% }); %>
-  </ul>
+</ul>
+
 
   <h3 class="start-head">Click to start the chat</h3>
   <div class="chat-section">

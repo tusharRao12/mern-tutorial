@@ -1,3 +1,14 @@
+// Wrapper
+const wrapper = document.querySelector(".wrapper"),
+          signupHeader = document.querySelector(".signup header"),
+          loginHeader = document.querySelector(".login header");
+        loginHeader.addEventListener("click", () => {
+          wrapper.classList.add("active");
+        });
+        signupHeader.addEventListener("click", () => {
+          wrapper.classList.remove("active");
+        });
+
 // Confirm Password
 document.addEventListener('DOMContentLoaded', function () {
     const registerForm = document.getElementById('registerForm');
@@ -37,6 +48,23 @@ document.addEventListener("DOMContentLoaded", function() {
           chatContainer.innerHTML = `<p>Chatting with: ${userName}</p>`;
         });
       });
+
+      socket.on('getOnlineUser', function(data) {
+        const statusElement = document.getElementById(`${data.user_id}-status`);
+        if (statusElement) {
+            statusElement.textContent = 'Online';
+            statusElement.classList.remove('offline-status');
+            statusElement.classList.add('online-status');
+        }
+      });    
+      socket.on('getOfflineUser', function(data) {
+        const statusElement = document.getElementById(`${data.user_id}-status`);
+        if (statusElement) {
+            statusElement.textContent = 'Offline';
+            statusElement.classList.remove('online-status');
+            statusElement.classList.add('offline-status');
+        }
+      });    
     }
   });
   

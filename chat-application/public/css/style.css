@@ -9,3 +9,9 @@
 .user-list{
   cursor: pointer;
 }
+.online-status{
+  color: green;
+}
+.offline-status{
+  color:red;
+}

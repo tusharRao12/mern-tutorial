@@ -92,7 +92,7 @@ loadDashboard = async (req, res) => {
         }
         const users = await User.find({
             _id: { $nin: [req.session.user._id] }
-        }).select('name email phone dateOfBirth image'); 
+        }).select('name email phone dateOfBirth image is_online'); 
 
         res.render('dashboard', {
             title: 'Dashboard',
