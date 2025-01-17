@@ -31,6 +31,13 @@
   font-family: Arial, sans-serif;
 }
 
+.heading-container{
+  display:flex;
+}
+.heading-container img{
+  width:30px;
+}
+
 /* Sidebar Section */
 .chat-sidebar {
   width: 30%;

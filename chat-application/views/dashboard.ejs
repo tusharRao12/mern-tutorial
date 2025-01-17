@@ -34,8 +34,7 @@
 
 
 <script>
-
-document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function() {
   // Modal Elements
   const modal = document.createElement('div');
   modal.classList.add('modal');
@@ -48,18 +47,50 @@ document.addEventListener('DOMContentLoaded', function() {
   modal.appendChild(modalContent);
   document.body.appendChild(modal);
 
-  // Event listener for image click (to open modal)
-  const userImages = document.querySelectorAll('.user-avatar');
-  userImages.forEach(image => {
-    image.addEventListener('click', function() {
-      const imgSrc = image.getAttribute('src');
-      const modalImage = document.createElement('img');
-      modalImage.src = imgSrc;
-      modalImage.classList.add('modal-img');
-      modalContent.appendChild(modalImage);
+  // Event listener for clicking a user list item
+  const userItems = document.querySelectorAll('.user-item');
+  userItems.forEach(item => {
+    item.addEventListener('click', function() {
+      const userImage = item.querySelector('.user-avatar').getAttribute('src');
+      const userName = item.querySelector('.user-name').innerText;
 
-      // Show the modal
-      modal.style.display = 'block';
+      // Update the heading with the user's image and name
+      const startHead = document.querySelector('.start-head');
+      startHead.innerHTML = ''; // Clear the previous content
+
+      // Create a container for image and name
+      const headingContainer = document.createElement('div');
+      headingContainer.classList.add('heading-container');
+      
+      // Create and append image
+      const imgElement = document.createElement('img');
+      imgElement.src = userImage;
+      imgElement.classList.add('heading-avatar');
+      headingContainer.appendChild(imgElement);
+      
+      // Create and append name
+      const nameElement = document.createElement('span');
+      nameElement.classList.add('heading-name');
+      nameElement.innerText = userName;
+      headingContainer.appendChild(nameElement);
+      
+      // Append the container to the heading
+      startHead.appendChild(headingContainer);
+
+      // Show the chat section
+      const chatSection = document.querySelector('.chat-section');
+      chatSection.style.display = 'block';
+
+      // Set the click event for the image in the heading to open the modal
+      imgElement.addEventListener('click', function() {
+        const modalImage = document.createElement('img');
+        modalImage.src = userImage;
+        modalImage.classList.add('modal-img');
+        modalContent.appendChild(modalImage);
+
+        // Show the modal
+        modal.style.display = 'block';
+      });
     });
   });
 
@@ -69,20 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
     modalContent.innerHTML = ''; // Clear modal content
     modalContent.appendChild(closeModal); // Add the close button back
   });
-
-  // Event listener for name click (to start chat)
-  const userNames = document.querySelectorAll('.user-name');
-  userNames.forEach(name => {
-    name.addEventListener('click', function() {
-      const userName = name.innerText;
-      const startHead = document.querySelector('.start-head');
-      startHead.innerHTML = `Chat with - ${userName}`;
-
-      // Show chat section
-      const chatSection = document.querySelector('.chat-section');
-      chatSection.style.display = 'block';
-    });
-  });
 });
-``
+
+
 </script>
