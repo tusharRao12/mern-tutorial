@@ -1,30 +1,88 @@
-<!-- <h1>Hi <%= user.name %></h1> -->
-<input type="hidden" id="loggedInUserId" value="<%= user._id %>">
-<div>
-  <ul>
-    <% users.forEach(function(user) { %>
-      <li class="user-list">
-        <strong>Name:</strong> <%= user.name %><br>
-        <img src="<%= user.image %>" alt="User Image" width="50" height="50">
-        <% 
-        if (user.is_online == 1) { %>
-            <sup class="online-status" id="<%= user._id %>-status">Online</sup>
-        <% } else { %> 
-            <sup class="offline-status" id="<%= user._id %>-status">Offline</sup>
-        <% } %>  
-      </li>
-    <% }); %>
-</ul>
+<div class="chat-app">
+  <div class="chat-sidebar">
+    <!-- <h2 class="app-title">Chat-Application</h2> -->
+    <ul class="user-list">
+      <% users.forEach(function(user) { %>
+        <li class="user-item">
+          <img src="<%= user.image %>" alt="User Image" class="user-avatar">
+          <div class="user-info">
+            <span class="user-name"><%= user.name %></span>
+            <span class="user-status" id="<%= user._id %>-status">
+              <% if (user.is_online == 1) { %>
+                Online
+              <% } else { %>
+                Offline
+              <% } %>
+            </span>
+          </div>
+        </li>
+      <% }); %>
+    </ul>
+  </div>
 
-
-  <h3 class="start-head">Click to start the chat</h3>
-  <div class="chat-section">
-    <div id="chat-container">
-
+  <div class="chat-content">
+    <h3 class="start-head">Click to start the chat</h3>
+    <div class="chat-section">
+      <div id="chat-container" class="chat-messages"></div>
+      <form action="" id="chat-form" class="message-form">
+        <input type="text" name="message" placeholder="Enter Message" id="message" required>
+        <button type="submit" class="send-button">Send</button>
+      </form>
     </div>
-    <form action="" id="chat-form">
-      <input type="text" name="message" placeholder="Enter Message" id="message" required>
-      <input type="submit" value="Send">
-    </form>
   </div>
 </div>
+
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Modal Elements
+  const modal = document.createElement('div');
+  modal.classList.add('modal');
+  const modalContent = document.createElement('div');
+  modalContent.classList.add('modal-content');
+  const closeModal = document.createElement('span');
+  closeModal.classList.add('close');
+  closeModal.innerHTML = '&times;';
+  modalContent.appendChild(closeModal);
+  modal.appendChild(modalContent);
+  document.body.appendChild(modal);
+
+  // Event listener for image click (to open modal)
+  const userImages = document.querySelectorAll('.user-avatar');
+  userImages.forEach(image => {
+    image.addEventListener('click', function() {
+      const imgSrc = image.getAttribute('src');
+      const modalImage = document.createElement('img');
+      modalImage.src = imgSrc;
+      modalImage.classList.add('modal-img');
+      modalContent.appendChild(modalImage);
+
+      // Show the modal
+      modal.style.display = 'block';
+    });
+  });
+
+  // Close modal when clicking the close button
+  closeModal.addEventListener('click', function() {
+    modal.style.display = 'none';
+    modalContent.innerHTML = ''; // Clear modal content
+    modalContent.appendChild(closeModal); // Add the close button back
+  });
+
+  // Event listener for name click (to start chat)
+  const userNames = document.querySelectorAll('.user-name');
+  userNames.forEach(name => {
+    name.addEventListener('click', function() {
+      const userName = name.innerText;
+      const startHead = document.querySelector('.start-head');
+      startHead.innerHTML = `Chat with - ${userName}`;
+
+      // Show chat section
+      const chatSection = document.querySelector('.chat-section');
+      chatSection.style.display = 'block';
+    });
+  });
+});
+``
+</script>
