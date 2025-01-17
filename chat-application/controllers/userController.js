@@ -1,6 +1,14 @@
 const User = require('../models/userModel');
 const bcrypt = require('bcrypt');
 
+home = async (req, res) => {
+    try {
+        res.render('home', { title: 'Home' });
+    } catch (error) {
+        console.log(error.message);
+    }
+};
+
 loginLoad = async (req, res) => {
     try {
         res.render('login', { title: 'Login',headerFooter: false });
@@ -38,6 +46,7 @@ registerLoad = async (req, res) => {
         console.log(error.message);
     }
 };
+
 
 const register = async (req, res) => {
     try {
@@ -112,4 +121,5 @@ module.exports = {
     login,
     logout,
     loadDashboard,
+    home,
 };

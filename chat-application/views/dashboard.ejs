@@ -1,7 +1,6 @@
-<h1>Hi <%= user.name %></h1>
+<!-- <h1>Hi <%= user.name %></h1> -->
 <input type="hidden" id="loggedInUserId" value="<%= user._id %>">
 <div>
-  <h3>All Users</h3>
   <ul>
     <% users.forEach(function(user) { %>
       <li class="user-list">

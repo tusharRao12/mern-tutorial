@@ -5,6 +5,8 @@ const userRouter = express.Router();
 const { authMiddleware, preventLoggedInAccess } = require('../middlewares/authMiddleware');
 
 
+userRouter.get('/',userController.home);
+
 userRouter.get('/login',preventLoggedInAccess,userController.loginLoad);
 userRouter.post('/login',userController.login);
 
