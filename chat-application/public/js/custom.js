@@ -122,4 +122,32 @@ document.addEventListener('DOMContentLoaded', function() {
     modalContent.innerHTML = '';
     modalContent.appendChild(closeModal); 
   });
+
+  $('#chat-form').submit(function(event){
+    event.preventDefault();
+
+    var message = $('#message').val();
+
+    $.ajax({
+      url:'/save-chat',
+      type:'POST',
+      data:{sender_id:sender_id,receiver_id:receiver_id,message:message},
+      success:function(response){
+        if(response.success){
+            $('#message').val('');
+            let chat = response.data.message;
+            let html = `
+                <div class="current-user-chat">
+                  <h5>`+chat+`</h5>
+                </div
+            `;
+            $('#chat-container').append(html);
+            socket.emit('newChat',response.data);
+        }else{
+          alert(data.msg)
+        }
+      }
+    })
+  })
+
 });
