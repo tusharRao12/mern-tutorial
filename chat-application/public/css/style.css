@@ -134,6 +134,7 @@
 
 .heading-container{
   display:flex;
+  gap: 15px;
 }
 .heading-container img{
   width:30px;
@@ -152,7 +153,18 @@
   overflow-y: auto;
   border-bottom: 1px solid #dee2e6;
   background-color: #ffffff;
+  height: calc(100vh - 95px - 95px);
+
 }
+.current-user-chat {
+  text-align: right;
+  margin: 10px;
+}
+.distance-user-chat {
+  text-align: left;
+  margin: 10px;
+}
+
 
 .message-form {
   display: flex;

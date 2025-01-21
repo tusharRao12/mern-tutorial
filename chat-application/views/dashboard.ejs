@@ -3,7 +3,7 @@
     <!-- <h2 class="app-title">Chat-Application</h2> -->
     <ul class="user-list">
       <% users.forEach(function(user) { %>
-        <li class="user-item">
+        <li class="user-item" data-id="<%= user._id %>">
           <img src="<%= user.image %>" alt="User Image" class="user-avatar">
           <div class="user-info">
             <span class="user-name"><%= user.name %></span>
@@ -23,7 +23,9 @@
   <div class="chat-content">
     <h3 class="start-head">Click to start the chat</h3>
     <div class="chat-section">
-      <div id="chat-container" class="chat-messages"></div>
+      <div id="chat-container" class="chat-messages">
+        
+      </div>
       <form action="" id="chat-form" class="message-form">
         <input type="text" name="message" placeholder="Enter Message" id="message" required>
         <button type="submit" class="send-button">Send</button>
@@ -34,73 +36,7 @@
 
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-  // Modal Elements
-  const modal = document.createElement('div');
-  modal.classList.add('modal');
-  const modalContent = document.createElement('div');
-  modalContent.classList.add('modal-content');
-  const closeModal = document.createElement('span');
-  closeModal.classList.add('close');
-  closeModal.innerHTML = '&times;';
-  modalContent.appendChild(closeModal);
-  modal.appendChild(modalContent);
-  document.body.appendChild(modal);
-
-  // Event listener for clicking a user list item
-  const userItems = document.querySelectorAll('.user-item');
-  userItems.forEach(item => {
-    item.addEventListener('click', function() {
-      const userImage = item.querySelector('.user-avatar').getAttribute('src');
-      const userName = item.querySelector('.user-name').innerText;
-
-      // Update the heading with the user's image and name
-      const startHead = document.querySelector('.start-head');
-      startHead.innerHTML = ''; // Clear the previous content
-
-      // Create a container for image and name
-      const headingContainer = document.createElement('div');
-      headingContainer.classList.add('heading-container');
-      
-      // Create and append image
-      const imgElement = document.createElement('img');
-      imgElement.src = userImage;
-      imgElement.classList.add('heading-avatar');
-      headingContainer.appendChild(imgElement);
-      
-      // Create and append name
-      const nameElement = document.createElement('span');
-      nameElement.classList.add('heading-name');
-      nameElement.innerText = userName;
-      headingContainer.appendChild(nameElement);
-      
-      // Append the container to the heading
-      startHead.appendChild(headingContainer);
-
-      // Show the chat section
-      const chatSection = document.querySelector('.chat-section');
-      chatSection.style.display = 'block';
-
-      // Set the click event for the image in the heading to open the modal
-      imgElement.addEventListener('click', function() {
-        const modalImage = document.createElement('img');
-        modalImage.src = userImage;
-        modalImage.classList.add('modal-img');
-        modalContent.appendChild(modalImage);
-
-        // Show the modal
-        modal.style.display = 'block';
-      });
-    });
-  });
-
-  // Close modal when clicking the close button
-  closeModal.addEventListener('click', function() {
-    modal.style.display = 'none';
-    modalContent.innerHTML = ''; // Clear modal content
-    modalContent.appendChild(closeModal); // Add the close button back
-  });
-});
+  
 
 
 </script>

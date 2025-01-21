@@ -28,28 +28,18 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-// Chat container display and socket
+
+
+//Socket
 document.addEventListener("DOMContentLoaded", function() {
     if (window.location.pathname === '/dashboard') {
-      const sender_id = document.getElementById('loggedInUserId').value;
+      var sender_id = document.getElementById('loggedInUserId').value;
+      var receiver_id;
       var socket =  io('/user-namespace',{
         auth:{
           token:sender_id
         }
       });
-      // const startChatHeading = document.querySelector('.start-head');
-      // const chatSection = document.querySelector('.chat-section');
-      // const userListItems = document.querySelectorAll('.user-list');
-      // const chatContainer = document.querySelector('#chat-container');
-  
-      // userListItems.forEach(function(userItem) {
-      //   userItem.addEventListener('click', function() {
-      //     startChatHeading.style.display = 'none';
-      //     chatSection.style.display = 'block';
-      //     const userName = userItem.querySelector('strong').nextSibling.textContent.trim();
-      //     chatContainer.innerHTML = `<p>Chatting with: ${userName}</p>`;
-      //   });
-      // });
 
       socket.on('getOnlineUser', function(data) {
         const statusElement = document.getElementById(`${data.user_id}-status`);
@@ -70,3 +60,66 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   });
   
+
+// Chat container
+document.addEventListener('DOMContentLoaded', function() {
+  // Modal Elements
+  const modal = document.createElement('div');
+  modal.classList.add('modal');
+  const modalContent = document.createElement('div');
+  modalContent.classList.add('modal-content');
+  const closeModal = document.createElement('span');
+  closeModal.classList.add('close');
+  closeModal.innerHTML = '&times;';
+  modalContent.appendChild(closeModal);
+  modal.appendChild(modalContent);
+  document.body.appendChild(modal);
+
+  // Event listener for clicking a user list item
+  const userItems = document.querySelectorAll('.user-item');
+  userItems.forEach(item => {
+    item.addEventListener('click', function() {
+      var userId = item.getAttribute('data-id');
+      receiver_id = userId;
+
+      const userImage = item.querySelector('.user-avatar').getAttribute('src');
+      const userName = item.querySelector('.user-name').innerText;
+
+      const startHead = document.querySelector('.start-head');
+      startHead.innerHTML = ''; 
+
+      const headingContainer = document.createElement('div');
+      headingContainer.classList.add('heading-container');
+  
+      const imgElement = document.createElement('img');
+      imgElement.src = userImage;
+      imgElement.classList.add('heading-avatar');
+      headingContainer.appendChild(imgElement);
+      
+      const nameElement = document.createElement('span');
+      nameElement.classList.add('heading-name');
+      nameElement.innerText = userName;
+      headingContainer.appendChild(nameElement);
+      
+      startHead.appendChild(headingContainer);
+
+      const chatSection = document.querySelector('.chat-section');
+      chatSection.style.display = 'block';
+
+      imgElement.addEventListener('click', function() {
+        const modalImage = document.createElement('img');
+        modalImage.src = userImage;
+        modalImage.classList.add('modal-img');
+        modalContent.appendChild(modalImage);
+
+        modal.style.display = 'block';
+      });
+    });
+  });
+
+  closeModal.addEventListener('click', function() {
+    modal.style.display = 'none';
+    modalContent.innerHTML = '';
+    modalContent.appendChild(closeModal); 
+  });
+});
