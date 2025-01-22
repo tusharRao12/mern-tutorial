@@ -116,7 +116,7 @@
         $('#chat-container').html('');
         var chats = data.chats;
         let html = '';
-        for(let x = 0; x<chats.lenght; x++){
+        for(let x = 0; x < chats.length; x++){
             let addClass = '';
             if(chats[x]['sender_id']== sender_id){
                 addClass = 'current-user-chat';
