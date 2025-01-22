@@ -11,20 +11,6 @@ const http = require('http').Server(app)
 const io = require('socket.io')(http);
 const User = require('./models/userModel')
 
-var usp = io.of('/user-namespace');
-usp.on('connection',async function(socket){
-        var userId = socket.handshake.auth.token;
-        await User.findByIdAndUpdate({_id:userId},{$set:{is_online:'1'}});
-        // user broadcast online status
-        socket.broadcast.emit('getOnlineUser',{user_id: userId});
-
-    socket.on('disconnect',async function(){ 
-        var userId = socket.handshake.auth.token;
-        await User.findByIdAndUpdate({_id:userId},{$set:{is_online:'0'}});
-        // user broadcast ofline status
-        socket.broadcast.emit('getOfflineUser',{user_id: userId});
-    })
-})
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
