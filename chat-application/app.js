@@ -22,10 +22,25 @@ app.use(
         cookie: { maxAge: 60000 * 60 * 24 }, 
     })
 );
+
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(ejsLayouts)
 app.set('layout','layouts/mainLayout')
+
+var usp = io.of('/user-namespace');
+usp.on('connection',async function(socket){
+    var userId = socket.handshake.auth.token;
+    await User.findByIdAndUpdate({_id:userId},{$set:{is_online:'1'}});
+    socket.broadcast.emit('getOnlineUser',{user_id:userId});
+    socket.on('disconnect',async function(){
+        await User.findByIdAndUpdate({_id:userId},{$set:{is_online:'0'}});
+        socket.broadcast.emit('getOfflineUser',{user_id:userId});
+    });
+    socket.on('newChat', function(data){
+        socket.broadcast.emit('loadNewChat',data);
+    });
+});
 
 // Routes
 const userRoutes = require('./routes/userRoutes');

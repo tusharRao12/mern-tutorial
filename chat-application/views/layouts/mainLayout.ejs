@@ -7,6 +7,10 @@
     <link rel="icon" href="/images/chat.png" type="image/x-icon">
     <link rel="stylesheet" href="/css/style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.2/socket.io.js" integrity="sha512-VJ6+sp2E5rFQk05caiXXzQd1wBABpjEj1r5kMiLmGAAgwPItw1YpqsCCBtq8Yr1x6C49/mTpRdXtq8O2RcZhlQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script
+  src="https://code.jquery.com/jquery-3.7.1.js"
+  integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+  crossorigin="anonymous"></script>
 </head>
 <body>
     <% if (typeof headerFooter === 'undefined' || headerFooter) { %>
@@ -29,10 +33,7 @@
     <% if (typeof headerFooter === 'undefined' || headerFooter) { %>
         <%- include('../partials/footer') %>
     <% } %>
-    <script
-  src="https://code.jquery.com/jquery-3.7.1.js"
-  integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-  crossorigin="anonymous"></script>
+    
     <script src="/js/custom.js" defer></script>
 </body>
 </html>

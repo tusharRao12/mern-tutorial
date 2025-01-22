@@ -27,9 +27,3 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-
-$(document).ready(function() {
-  if (window.location.pathname === '/dashboard') {
-    alert('Hello, you are on the Dashboard route!');
-  }
-});

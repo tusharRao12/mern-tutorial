@@ -1,1 +1,112 @@
-<h1>Dashboaard</h1>
+<h1>Hi <%= user.name %></h1>
+<div>
+    <div>
+        <ul>
+            <% 
+              if (users.length > 0) { 
+                for (let i = 0; i < users.length; i++) { 
+            %>
+                  <li class="user-list" data-id="<%= users[i]['_id'] %>">
+                    <img src="<%= users[i]['image'] %>" alt="" width="50" height="50">
+                    <%= users[i].name %>
+                    <% if(users[i]['is_online'] == 1) { %>
+                        <sup class="online-status" id="<%= users[i]['_id']%>-status">Online</sup>
+                    <% } else { %>
+                        <sup class="offline-status" id="<%= users[i]['_id']%>-status">Offline</sup>
+                    <% } %>
+                  </li>
+            <% 
+                } 
+              } else { 
+            %>
+                <p>You are the only user</p>
+            <% 
+              } 
+            %>
+          </ul>
+          
+          
+    </div>
+    <div>
+        <h3 class="start-head">Click to start chat</h3>
+        <div class="chat-section">
+            <div id="chat-container">
+                
+            </div>
+            <form id="chat-form">
+                <input type="text" name="message" id="message" placeholder="Enter Message" required>    
+                <input type="submit" value="Send">
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var sender_id = '<%= user._id %>';
+    var receiver_id;
+    var socket = io('/user-namespace',{
+        auth:{
+            token:sender_id,
+        }
+    });   
+
+    $(document).ready(function() {
+      $('.user-list').click(function(){
+        var userId = $(this).attr('data-id');
+        receiver_id = userId;
+        $('.start-head').hide();
+        $('.chat-section').show();
+      });
+    });
+
+    socket.on('getOnlineUser', function(data){
+        $('#'+data.user_id+'-status').text('Online');
+        $('#'+data.user_id+'-status').removeClass('offline-status');
+        $('#'+data.user_id+'-status').addClass('online-status');
+    });
+    socket.on('getOfflineUser', function(data){
+        $('#'+data.user_id+'-status').text('Offline');
+        $('#'+data.user_id+'-status').removeClass('online-status');
+        $('#'+data.user_id+'-status').addClass('offline-status');
+    });
+
+    $('#chat-form').submit(function(event){
+        event.preventDefault();
+
+        var message = $('#message').val();
+        $.ajax({
+            url:'/save-chat',
+            type:'POST',
+            data:{sender_id:sender_id,receiver_id:receiver_id,message:message},
+            success:function(response){
+                if(response.success){
+                    console.log(response.data.message);
+                    $('#message').val('');
+                    let chat = response.data.message;
+                    let html = `
+                        <div class="current-user-chat">
+                            <h5>`+chat+`</h5> 
+                        </div>
+                    `;
+                    $('#chat-container').append(html); 
+                    socket.emit('newChat',response.data);
+                }else{
+                    alert(response.msg);
+                }
+            }
+        });
+    });
+
+    socket.on('loadNewChat',function(data){
+        if(sender_id === data.receiver_id && receiver_id === data.sender_id){
+            let html = `
+            <div class="distance-user-chat">
+                <h5>`+data.message+`</h5> 
+            </div>
+            `;
+            $('#chat-container').append(html); 
+        }
+    });
+    
+</script>
