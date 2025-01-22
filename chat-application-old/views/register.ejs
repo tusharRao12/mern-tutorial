@@ -1,0 +1,50 @@
+<section class="register">
+    <div class="container">
+        <div class="signup-content">
+            <div class="signup-form">
+                <h2 class="form-title">Register</h2>
+                <form action="/register" method="post" enctype="multipart/form-data" id="registerForm" class="register-form">
+                    <div class="form-group">
+                        <input type="text" name="name" id="name" placeholder="Your Name" required>
+                        <span id="nameError" class="error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="email" name="email" id="email" placeholder="Your Email" required>
+                        <span id="emailError" class="error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="number" name="phone" id="phone" placeholder="Your Phone">
+                        <span id="phoneError" class="error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="date" name="dateOfBirth" id="dateOfBirth" placeholder="Your Date of Birth">
+                        <span id="dateOfBirthError" class="error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="file" name="image" id="image" required>
+                        <span id="imageError" class="error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="password" name="password" id="password" placeholder="Password" required>
+                        <span id="passwordError" class="error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="password" name="confirm-password" id="confirm-password" placeholder="Confirm Password" required>
+                        <span id="confirmPasswordError" class="error"></span>
+                    </div>
+                    <div class="form-group form-button">
+                        <input type="submit" value="Register" class="form-submit">
+                    </div>
+                </form>
+            </div>
+            <p>Already a membber ? <a href="/login">Login</a></p>
+        </div>
+    </div>
+</section>
+
