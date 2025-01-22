@@ -7,9 +7,10 @@ const app = express();
 const session = require('express-session');
 const { SESSION_SECRET } = process.env;
 const PORT = process.env.PORT || 4000;
-const http = require('http').Server(app)
+const http = require('http').Server(app);
 const io = require('socket.io')(http);
-const User = require('./models/userModel')
+const User = require('./models/userModel');
+const Chat = require('./models/chatModel');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -37,9 +38,20 @@ usp.on('connection',async function(socket){
         await User.findByIdAndUpdate({_id:userId},{$set:{is_online:'0'}});
         socket.broadcast.emit('getOfflineUser',{user_id:userId});
     });
+    //chat implementation
     socket.on('newChat', function(data){
         socket.broadcast.emit('loadNewChat',data);
     });
+    // load old chats
+    socket.on('existsChat',async function(data){
+        var chats = await Chat.find({ $or:[
+            { sender_id:data.sender_id,receiver_id:data.receiver_id },
+            { sender_id:data.receiver_id,receiver_id:data.sender_id },
+        ]});
+
+        socket.emit('loadChats', {chats:chats});
+    });
+
 });
 
 // Routes
