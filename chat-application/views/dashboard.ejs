@@ -1,4 +1,3 @@
-<!-- <h1>Hi <%= user.name %></h1> -->
 <section class="chat-box">
   <div class="container-fluid">
     <div class="row">
@@ -7,14 +6,11 @@
           <% if (users.length > 0) { for (let i = 0; i < users.length; i++) { %>
           <li class="user-list" data-id="<%= users[i]['_id'] %>">
             <img src="<%= users[i]['image'] %>" alt="" width="50" height="50" />
-            <%= users[i].name %> <% if(users[i]['is_online'] == 1) { %>
-            <sup class="online-status" id="<%= users[i]['_id']%>-status"
-              >Online</sup
-            >
+            <%= users[i].name %> 
+            <% if(users[i]['is_online'] == 1) { %>
+            <sup class="online-status" id="<%= users[i]['_id']%>-status">Online</sup>
             <% } else { %>
-            <sup class="offline-status" id="<%= users[i]['_id']%>-status"
-              >Offline</sup
-            >
+            <sup class="offline-status" id="<%= users[i]['_id']%>-status">Offline</sup>
             <% } %>
           </li> 
           <% } } else { %>
@@ -25,7 +21,7 @@
 
       <div class="right-ul">
         <h3 class="start-head">Click to start chat</h3>
-        <div class="chat-section">
+        <div class="chat-section" style="display: none;">
           <div id="chat-container"></div>
           <form id="chat-form">
             <input
@@ -42,34 +38,31 @@
       </div>
     </div>
   </div>
-  <!-- Button trigger modal -->
-<!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteChatModal">
-  Launch demo modal
-</button> -->
 
-<!-- Modal -->
-<div class="modal fade" id="deleteChatModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Delete Chat</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  <!-- Modal -->
+  <div class="modal fade" id="deleteChatModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Delete Chat</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="delete-chat-form">
+          <div class="modal-body">
+            <input type="hidden" name="id" id="delete-message-id">
+            <p>Are you sure you want to delete the following message?</p>
+            <p><b id="delete-message"></b></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-danger">Delete</button>
+          </div>
+        </form>
       </div>
-      <form id="delete-chat-form">
-        <div class="modal-body">
-          <input type="text" name="id" id="delete-message-id">
-          <p>Are You sure you want to delete below Message?</p>
-          <p><b id="delete-message"></b></p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
-      </form>
     </div>
   </div>
-</div>
 </section>
+
 <script>
   var sender_id = "<%= user._id %>";
   var receiver_id;
@@ -98,6 +91,7 @@
     $("#" + data.user_id + "-status").removeClass("offline-status");
     $("#" + data.user_id + "-status").addClass("online-status");
   });
+
   socket.on("getOfflineUser", function (data) {
     $("#" + data.user_id + "-status").text("Offline");
     $("#" + data.user_id + "-status").removeClass("online-status");
@@ -118,17 +112,14 @@
       },
       success: function (response) {
         if (response.success) {
-          console.log(response.data.message);
           $("#message").val("");
           let chat = response.data.message;
-          let html =
-            `
-                        <div class="current-user-chat" id="`+response.data._id+`">
-                            <h5>`+chat+`
-                            <i class="fa fa-trash" aria-hidden="true" data-id="`+response.data._id+`" data-bs-toggle="modal" data-bs-target="#deleteChatModal"></i>  
-                            </h5> 
-                        </div>
-                    `;
+          let html = `
+            <div class="current-user-chat" id="${response.data._id}">
+              <h5>${chat}
+                <i class="fa fa-trash" aria-hidden="true" data-id="${response.data._id}" data-bs-toggle="modal" data-bs-target="#deleteChatModal"></i>
+              </h5>
+            </div>`;
           $("#chat-container").append(html);
           socket.emit("newChat", response.data);
 
@@ -142,40 +133,30 @@
 
   socket.on("loadNewChat", function (data) {
     if (sender_id === data.receiver_id && receiver_id === data.sender_id) {
-      let html =
-        `
-            <div class="distance-user-chat" id="`+data._id+`">
-                <h5>` +data.message +               
-                  `</h5> 
-            </div>
-            `;
+      let html = `
+        <div class="distance-user-chat" id="${data._id}">
+          <h5>${data.message}</h5>
+        </div>`;
       $("#chat-container").append(html);
     }
     scrollChat();
   });
 
-  // load old chats
+  // Load old chats
   socket.on("loadChats", function (data) {
     $("#chat-container").html("");
     var chats = data.chats;
     let html = "";
     for (let x = 0; x < chats.length; x++) {
-      let addClass = "";
-      if (chats[x]["sender_id"] == sender_id) {
-        addClass = "current-user-chat";
-      } else {
-        addClass = "distance-user-chat";
-      }
+      let addClass = (chats[x]["sender_id"] == sender_id) ? "current-user-chat" : "distance-user-chat";
 
-      html +=
-        `<div class="` +addClass +`" id="`+chats[x]["_id"]+`">
-          <h5>` +chats[x]["message"] +``;
-            if (chats[x]["sender_id"] == sender_id) {
-              html +=`<i class="fa fa-trash" aria-hidden="true" data-id="`+chats[x]["_id"]+`" data-bs-toggle="modal" data-bs-target="#deleteChatModal"></i>`;
-            }
-            html +=`
-            </h5>
-          </div>`;
+      html += `
+        <div class="${addClass}" id="${chats[x]["_id"]}">
+          <h5>${chats[x]["message"]}`;
+      if (chats[x]["sender_id"] == sender_id) {
+        html += `<i class="fa fa-trash" aria-hidden="true" data-id="${chats[x]["_id"]}" data-bs-toggle="modal" data-bs-target="#deleteChatModal"></i>`;
+      }
+      html += `</h5></div>`;
     }
 
     $("#chat-container").append(html);
@@ -193,9 +174,36 @@
     );
   }
 
-  $(document).on('click','.fa-trash', function(){
+  // Delete message event
+  $(document).on('click', '.fa-trash', function () {
     let msg = $(this).parent().text();
+    console.log("Clicked message: ", msg);
+    console.log("Message ID: ", $(this).attr('data-id')); // Debug log
     $('#delete-message').text(msg);
+    $('#delete-message-id').val($(this).attr('data-id'));
   });
-  
+
+  $('#delete-chat-form').submit(function(event){
+    event.preventDefault();
+
+    var id = $('#delete-message-id').val();
+    $.ajax({
+      url:'/delete-chat',
+      type:'POST',
+      dat:{ id:id},
+      success:function(res){
+        if(res.success == true){
+          $(`#`+id).remove();
+          $('#deleteChatModal').modal('hide');
+          socket.emit('chatDeleted', id);
+        }else{
+          alert(res.msg);
+        }
+      }
+    });
+  });
+
+  socket.on('chatMessageDeleted',function(id){
+    $('#'+id).remove();
+  });
 </script>
