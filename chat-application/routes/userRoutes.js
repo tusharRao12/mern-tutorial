@@ -9,6 +9,7 @@ const { authMiddleware, preventLoggedInAccess } = require('../middlewares/authMi
 userRouter.get('/',userController.home);
 
 userRouter.post('/save-chat',chatController.saveChat)
+userRouter.post('/delete-chat',chatController.deleteChat)
 
 userRouter.get('/login',preventLoggedInAccess,userController.loginLoad);
 userRouter.post('/login',userController.login);

@@ -311,3 +311,6 @@ input#signin {
 #chat-form .submit-button:focus {
   outline: none;
 }
+.fa-trash{
+  color: red;
+}
