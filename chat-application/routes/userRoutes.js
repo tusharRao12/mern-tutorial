@@ -10,6 +10,7 @@ userRouter.get('/',userController.home);
 
 userRouter.post('/save-chat',chatController.saveChat)
 userRouter.post('/delete-chat',chatController.deleteChat)
+userRouter.post('/update-chat',chatController.updateChat)
 
 userRouter.get('/login',preventLoggedInAccess,userController.loginLoad);
 userRouter.post('/login',userController.login);
