@@ -100,6 +100,7 @@
       receiver_id = userId;
       $(".start-head").hide();
       $(".chat-section").show();
+      $(".right-ul").css("align-items", "flex-end");
 
       socket.emit("existsChat", {
         sender_id: sender_id,
@@ -107,6 +108,7 @@
       });
     });
   });
+
 
   socket.on("getOnlineUser", function (data) {
     $("#" + data.user_id + "-status").text("Online");

@@ -255,6 +255,27 @@ input#signin {
   width: 25%!important;
   background: greenyellow;
   height: calc(100vh - 147px );
+  overflow-y: auto;
+  scrollbar-width: thin; /* Thin scrollbar */
+  scrollbar-color: #888 transparent;
+}
+.left-ul::-webkit-scrollbar {
+  width: 5px;
+}
+.left-ul::-webkit-scrollbar-thumb {
+  background: #888; /* Scrollbar color */
+  border-radius: 10px; /* Optional: rounded corners */
+}
+
+.left-ul::-webkit-scrollbar-thumb:hover {
+  background: #888;
+   /* Darker color when hovering */
+}
+
+
+.left-ul::-webkit-scrollbar-track{
+  background-color: #0056b3;
+  border-radius: 18px;
 }
 .left-ul ul li {  
   list-style: none;
@@ -265,7 +286,7 @@ input#signin {
   padding: 0!important;
   display: flex;
   background-color: aliceblue;
-  align-items: flex-end;
+  /* align-items: flex-end; */
   height: calc(100vh - 147px);
 }
 /* Form Container */
