@@ -211,7 +211,7 @@ input#signin {
 #chat-container{
   
   /* height: 400px; */
-  height: calc(80vh);
+  height: calc(60vh);
   overflow-y: auto;
   scrollbar-width: thin; /* Thin scrollbar */
   scrollbar-color: #888 transparent;
@@ -228,14 +228,16 @@ input#signin {
   background: #888;
    /* Darker color when hovering */
 }
-
-
 #chat-container::-webkit-scrollbar-track{
   background-color: #0056b3;
   border-radius: 18px;
 }
+#chat-container h5 span{
+  color: white;
+}
 .user-list{
   cursor: pointer;
+  color: white;
 }
 .online-status{
   color: green;
@@ -250,10 +252,19 @@ input#signin {
 .distance-user-chat{
   text-align: left;
   margin: 10px;
+  color: white;
+}
+.chat-header{
+  display: none;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background: #202c33; 
+  border-bottom: 1px solid #333;
 }
 .left-ul {
   width: 25%!important;
-  background: greenyellow;
+  background:  #202C33;
   height: calc(100vh - 147px );
   overflow-y: auto;
   scrollbar-width: thin; /* Thin scrollbar */
@@ -285,7 +296,9 @@ input#signin {
   width: 75%!important;
   padding: 0!important;
   display: flex;
-  background-color: aliceblue;
+  justify-content: center;
+  align-items: center;
+  background-color: #111B21;
   /* align-items: flex-end; */
   height: calc(100vh - 147px);
 }
