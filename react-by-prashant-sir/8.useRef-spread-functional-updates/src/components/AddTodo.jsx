@@ -1,24 +1,18 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import { IoIosAdd } from "react-icons/io";
 
 const AddTodo = ({ onNewItem }) => {
+  const todoNameElement = useRef();
+  const dueDateElement = useRef();
 
-  const [todoName, setTodoName] = useState("")
-  const [dueDate, setdueDate] = useState("");
-
-  const handleNameChange = (event) =>{
-    setTodoName(event.target.value);
-  }
-
-  const handleDateChange = (event) =>{
-    setdueDate(event.target.value);
-  }
 
   const handleAddButtonClicked = (event)=>{
     event.preventDefault();
+    const todoName = todoNameElement.current.value;
+    const dueDate = dueDateElement.current.value;
+    todoNameElement.current.value = '';
+    dueDateElement.current.value = '';
     onNewItem(todoName,dueDate);
-    setdueDate("");
-    setTodoName("");
   }
 
   return (
@@ -27,18 +21,16 @@ const AddTodo = ({ onNewItem }) => {
         <div className="col-6">
           <input
             type="text"
+            ref={todoNameElement}
             placeholder="Enter Todo Here"
             name="name"
-            value={todoName}
-            onChange={handleNameChange}
           />
         </div>
         <div className="col-4">
           <input
             type="date"
             name="date"
-            onChange={handleDateChange}
-            value={dueDate}
+            ref={dueDateElement}
           />
         </div>
         <div className="col-2">
