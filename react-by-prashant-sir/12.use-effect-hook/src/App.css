@@ -23,3 +23,10 @@
     margin-left: 10%;
     margin-top: 50px;
 }
+.spinner{
+    margin: 10% 0;
+}
+.spinner .spinner-border{
+    width: 5rem;
+    height: 5rem;
+}

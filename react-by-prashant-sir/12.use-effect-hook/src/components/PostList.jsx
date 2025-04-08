@@ -1,28 +1,28 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Post from "./Post";
 import { PostList as PostListData} from "../store/posts-list-store";
 import WelcomeMessage from './WelcomeMessage';
+import LoadingSpineer from "./LoadingSpineer";
 const PostList = () => {
   const { postList, addInitialPosts } = useContext(PostListData);
 
-  const [dataFetched, setDataFetched] = useState(false);
+  const [fetching,setFetching] = useState(false);
 
-  if(!dataFetched){
+  useEffect(()=>{
+    setFetching(true);
     fetch("https://dummyjson.com/posts")
-    .then((res) => res.json())
-    .then((data) => {
-      addInitialPosts(data.posts);
-    });
-    setDataFetched(true);
-  }
+      .then((res) => res.json())
+      .then((data) => {
+        addInitialPosts(data.posts);
+        setFetching(false);
+      });
+  },[]);
+
   return (
     <>
-      {postList.length === 0 && (
-        <WelcomeMessage />
-      )}
-      {postList.map((post) => (
-        <Post key={post.id} post={post} />
-      ))}
+      {fetching && <LoadingSpineer />}
+      {!fetching && postList.length === 0 && <WelcomeMessage />}
+      {!fetching && postList.map((post) => <Post key={post.id} post={post} />)}
     </>
   );
 }

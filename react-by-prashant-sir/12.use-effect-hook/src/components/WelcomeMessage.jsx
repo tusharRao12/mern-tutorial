@@ -1,4 +1,4 @@
-const WelcomeMessage = ( {onGetPostsClick} ) => {
+const WelcomeMessage = () => {
   return (
     <center>
       <h1 className="mt-4 mb-4">No Posts</h1>
