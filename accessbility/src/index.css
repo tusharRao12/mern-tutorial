@@ -1,0 +1,35 @@
+:root {
+  --font-size: 16px;
+  --line-height: 1.5;
+  --letter-spacing: 0px;
+  --font-weight: 400;
+  --font-family: Arial, sans-serif;
+  --bg-color: #ffffff;
+  --text-color: #000000;
+}
+
+body {
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+  letter-spacing: var(--letter-spacing);
+  font-weight: var(--font-weight);
+  font-family: var(--font-family);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: all 0.3s ease;
+}
+
+.stop-animations * {
+  animation: none !important;
+  transition: none !important;
+}
+
+.highlight-titles h1,
+.highlight-titles h2 {
+  outline: 2px dashed red;
+}
+
+.highlight-links a {
+  background: yellow;
+  color: black;
+}
