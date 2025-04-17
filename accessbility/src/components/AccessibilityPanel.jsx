@@ -6,35 +6,40 @@ const AccessibilityPanel = () => {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    document.documentElement.style.setProperty(
-      "--font-size",
-      `${settings.fontSize}px`
-    );
-    document.documentElement.style.setProperty(
-      "--line-height",
-      settings.lineHeight
-    );
-    document.documentElement.style.setProperty(
-      "--letter-spacing",
-      `${settings.letterSpacing}px`
-    );
-    document.documentElement.style.setProperty(
-      "--font-weight",
-      settings.fontWeight
-    );
-    document.documentElement.style.setProperty(
-      "--font-family",
-      settings.dyslexiaFont ? "OpenDyslexic, sans-serif" : "Arial, sans-serif"
-    );
+    const root = document.documentElement;
+    const content = document.querySelector(".accessible-content");
 
-    const themes = {
-      light: ["#ffffff", "#000000"],
-      dark: ["#121212", "#ffffff"],
-      "high-contrast": ["#000000", "#FFD700"],
-    };
-    const [bg, text] = themes[settings.theme];
-    document.documentElement.style.setProperty("--bg-color", bg);
-    document.documentElement.style.setProperty("--text-color", text);
+    if (content) {
+      content.style.setProperty("--font-size", `${settings.fontSize}px`);
+      content.style.setProperty("--line-height", settings.lineHeight);
+      content.style.setProperty(
+        "--letter-spacing",
+        `${settings.letterSpacing}px`
+      );
+      content.style.setProperty("--font-weight", settings.fontWeight);
+      content.style.setProperty(
+        "--font-family",
+        settings.dyslexiaFont
+          ? "'OpenDyslexic', sans-serif"
+          : "Arial, sans-serif"
+      );
+      content.style.setProperty(
+        "--bg-color",
+        settings.theme === "dark"
+          ? "#121212"
+          : settings.theme === "high-contrast"
+          ? "#000000"
+          : "#ffffff"
+      );
+      content.style.setProperty(
+        "--text-color",
+        settings.theme === "dark"
+          ? "#ffffff"
+          : settings.theme === "high-contrast"
+          ? "#FFD700"
+          : "#000000"
+      );
+    }
 
     document.body.style.filter =
       settings.saturation === "low"
@@ -43,18 +48,14 @@ const AccessibilityPanel = () => {
         ? "saturate(200%)"
         : "saturate(100%)";
 
-    document.body.style.cursor = settings.bigCursor
-      ? "url('https://cur.cursors-4u.net/cursors/cur-11/cur1030.cur'), auto"
-      : "auto";
-
     document.body.classList.toggle("stop-animations", settings.stopAnimations);
-    document.body.classList.toggle("highlight-titles", settings.highlightTitle);
-    document.body.classList.toggle("highlight-links", settings.highlightLinks);
+    document.body.classList.toggle("big-cursor", settings.bigCursor);
   }, [settings]);
+
 
   return (
     <div
-      className="position-fixed bottom-0 end-0 m-3"
+      className="bottom-0 end-0 m-3"
       style={{ zIndex: 1050, maxWidth: "300px" }}
     >
       <button
