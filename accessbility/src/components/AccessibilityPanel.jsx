@@ -20,7 +20,7 @@ const AccessibilityPanel = () => {
       content.style.setProperty(
         "--font-family",
         settings.dyslexiaFont
-          ? "'OpenDyslexic', sans-serif"
+          ? "'Open-Dyslexic', sans-serif"
           : "Arial, sans-serif"
       );
       content.style.setProperty(
