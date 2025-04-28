@@ -4,20 +4,7 @@ import { PostList as PostListData} from "../store/posts-list-store";
 import WelcomeMessage from './WelcomeMessage';
 import LoadingSpineer from "./LoadingSpineer";
 const PostList = () => {
-  const { postList, addInitialPosts } = useContext(PostListData);
-
-  const [fetching,setFetching] = useState(false);
-
-  useEffect(()=>{
-    setFetching(true);
-    fetch("https://dummyjson.com/posts")
-      .then((res) => res.json())
-      .then((data) => {
-        addInitialPosts(data.posts);
-        setFetching(false);
-      });
-  },[]);
-
+  const { postList, fetching } = useContext(PostListData);
   return (
     <>
       {fetching && <LoadingSpineer />}
