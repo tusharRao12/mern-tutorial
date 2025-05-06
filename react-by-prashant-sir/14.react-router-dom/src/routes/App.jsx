@@ -1,6 +1,7 @@
 import './App.css'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import { Outlet } from 'react-router-dom'
 import Sidebar from "../components/Sidebar";
 import CreatePost from "../components/CreatePost";
 import PostList from "../components/PostList";
@@ -17,6 +18,7 @@ function App() {
       <Sidebar selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
       <div className="content">
         <Header />
+        <Outlet/>
         <Footer />
       </div>
     </div>
