@@ -1,58 +1,50 @@
-import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { handleError, handleSuccess } from './utils';
+import { useEffect, useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { handleError, handleSuccess } from '../utils/utils';
 import { ToastContainer } from 'react-toastify';
-const Home = () => {
-  const [loggedInUser, setLoggedInUser] = useState('');
-  const [products, setProducts] = useState([]);
+import { useAuth } from '../context/AuthContext';
 
+const Home = () => {
+  const { user, logout } = useAuth();
+  const [products, setProducts] = useState([]);
   const navigate = useNavigate();
 
-  useEffect(()=>{
-    setLoggedInUser(localStorage.getItem('loggedInUser'));
-  },[])
-
-  const fetchProducts = async()=>{
-    try{
-      const url = 'http://localhost:8080/products';
-      const headers = {
-        headers : {
-          'Authorization': localStorage.getItem('token')
+  const fetchProducts = useCallback(async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/products`, {
+        headers: {
+          Authorization: localStorage.getItem('token')
         }
-      }
-      const response = await fetch(url,headers);
+      });
       const result = await response.json();
       setProducts(result);
-    }catch(err){
-      handleError(err);
+    } catch (err) {
+      handleError('Failed to load products');
     }
-  }
-  useEffect(()=>{
-    fetchProducts()
-  },[])
+  }, []);
 
-  const handleLogout = (e) =>{
-    localStorage.removeItem('token');
-    localStorage.removeItem('loggedInUser');
-    handleSuccess('User Logged Out')
-    setTimeout(()=>{
-      navigate('/login')
-    },1000)
-  }
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
+
+  const handleLogout = () => {
+    logout();
+    handleSuccess('Logged out');
+    setTimeout(() => navigate('/login'), 1000);
+  };
+
   return (
     <div>
-      <h1>{loggedInUser}</h1>
+      <h1>Welcome, {user}</h1>
       <button onClick={handleLogout}>Logout</button>
-      <ToastContainer/>
-      <div>
-        <ul>
-          {products.map((item,index) => (
-            <li key={index}>{item.name}: {item.price}</li>
-          ))}
-        </ul>
-      </div>
+      <ToastContainer />
+      <ul>
+        {products.map((item, idx) => (
+          <li key={idx}>{item.name}: {item.price}</li>
+        ))}
+      </ul>
     </div>
-  )
-}
+  );
+};
 
 export default Home;
