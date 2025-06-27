@@ -6,17 +6,50 @@ import { useState } from "react";
 const ContactSection = () => {
   const {toast} = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const handleSubmit = (e) =>{
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setTimeout(()=>{
+  
+    const formData = new FormData(e.target);
+    const data = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      message: formData.get("message"),
+    };
+  
+    try {
+      const response = await fetch("http://localhost:5000/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+  
+      if (response.ok) {
         toast({
-            title: "Message sent!",
-            description: "Thank you for your message. I'll get back to you soon"
-        })
-        setIsSubmitting(false);
-    }, 1500)
-  }
+          title: "Message sent!",
+          description: "Thank you for your message. I'll get back to you soon",
+        });
+        e.target.reset();
+      } else {
+        toast({
+          title: "Error",
+          description: "Failed to send message. Please try again later.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error("Submission error:", error);
+      toast({
+        title: "Error",
+        description: "Server is unreachable. Try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   return (
     <section id="contact" className="py-24 px-4 relative bg-secondary/30">
         <div className="container mx-auto max-w-5xl">
