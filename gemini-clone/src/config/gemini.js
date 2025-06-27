@@ -8,7 +8,7 @@ import {
   
   async function main() {
     const ai = new GoogleGenAI({
-      apiKey: "AIzaSyDkxWRAGyZynSs4CLPzCNE9XGP0u8OIMRE",
+      apiKey: "",
     });
     const config = {
       thinkingConfig: {
